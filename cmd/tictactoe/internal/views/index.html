@@ -1,11 +1,11 @@
 <div class="container" hx-ext="sse" sse-connect="/events">
-    <button id="new-game" hx-trigger="click" hx-post="/new-game">New Game</button>
+    <button id="new-game" hx-post="/new-game">New Game</button>
     <h1>Tic-Tac-Toe</h1>
     <table>
         {{ range $row, $_ := .GameField }}
             <tr>
                 {{ range $col, $_ := . }}
-                    <td hx-trigger="click" hx-post="/make-turn"
+                    <td hx-post="/make-turn"
                         hx-vals='{"position": [{{ $row }}, {{ $col }}]}'
                     ><span sse-swap="cell-updated-{{$row}}-{{$col}}">{{ . }}</span></td>
                 {{ end }}

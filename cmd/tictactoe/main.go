@@ -1,30 +1,41 @@
 package main
 
 import (
+	"embed"
 	"fmt"
 	"io"
 	"log"
+	"net/http"
 	"strconv"
 	"sync"
 
 	"htmx/cmd/tictactoe/internal/broadcast"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/filesystem"
 	"github.com/gofiber/template/html/v2"
 	"github.com/samber/lo"
 )
 
-type m = fiber.Map
+//go:embed internal/views
+var viewsFS embed.FS
+
+//go:embed internal/assets/*
+var assetsFS embed.FS
 
 func main() {
 	// infra specific
-	views := html.New("cmd/tictactoe/internal/views", ".html")
+	views := html.NewFileSystem(http.FS(viewsFS), ".html")
 	views.Reload(true)
+	views.Directory = "internal/views"
 	app := fiber.New(fiber.Config{
 		Views:             views,
 		PassLocalsToViews: true,
 	})
-	app.Static("/", "./cmd/tictactoe/assets")
+	app.Use("/static", filesystem.New(filesystem.Config{
+		Root:       http.FS(assetsFS),
+		PathPrefix: "assets",
+	}))
 
 	// business specific
 	currentPlayer := "X"

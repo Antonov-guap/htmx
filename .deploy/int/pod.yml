@@ -1,0 +1,20 @@
+kind: Pod
+apiVersion: v1
+metadata:
+  name: test-htmx
+spec:
+  containers:
+    - name: test-htmx
+      image: registry.mobbtech.com/hack23-hooked/htmx
+      ports:
+        - name: http
+          containerPort: 8080
+          protocol: TCP
+      resources:
+        limits:
+          cpu: 256m
+          memory: 500Mi
+        requests:
+          cpu: 256m
+          memory: 500Mi
+  restartPolicy: Always
