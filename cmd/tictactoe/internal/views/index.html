@@ -1,0 +1,108 @@
+<div class="container" hx-ext="sse" sse-connect="/events">
+    <button id="new-game" hx-trigger="click" hx-post="/new-game">New Game</button>
+    <h1>Tic-Tac-Toe</h1>
+    <table>
+        {{ range $row, $_ := .GameField }}
+            <tr>
+                {{ range $col, $_ := . }}
+                    <td hx-trigger="click" hx-post="/make-turn"
+                        hx-vals='{"position": [{{ $row }}, {{ $col }}]}'
+                    ><span sse-swap="cell-updated-{{$row}}-{{$col}}">{{ . }}</span></td>
+                {{ end }}
+            </tr>
+        {{ end }}
+    </table>
+    <h2>
+        Current player <span sse-swap="player-updated">{{.CurrentPlayer}}</span>
+    </h2>
+</div>
+
+<style>
+    body {
+        margin: 0;
+        background-color: lightyellow;
+        font-family: Verdana, sans-serif;
+
+    }
+
+    * {
+        box-sizing: border-box;
+    }
+
+    :root {
+        --button-background: darkblue;
+        --button-background-hover: aquamarine;
+        --button-border: aquamarine 3px solid;
+        --button-radius: 15px;
+        --color-hover: blue;
+        --color: white;
+    }
+
+    .container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        width: 100vw;
+        margin: 0;
+        padding: 15px;
+    }
+
+    .container > h1 {
+        text-shadow: 2px 0 5px dimgray;
+    }
+
+    .container > table {
+        box-shadow: 2px 0 15px dimgray;
+        width: 300px;
+        height: 300px;
+        background-color: lightskyblue;
+        border-radius: 15px;
+        border: 2px solid dimgray;
+        min-height: 300px;
+    }
+
+    .container td {
+        border-radius: var(--button-radius);
+        border: var(--button-border);
+        background-color: var(--button-background);
+        width: 33.333333%; /* каждая ячейка будет занимать 1/3 ширины таблицы */
+        height: 33.333333%; /* каждая ячейка будет занимать 1/3 высоты таблицы */
+        text-align: center; /* горизонтальное выравнивание текста */
+        vertical-align: middle; /* вертикальное выравнивание текста */
+        font-size: 3em; /* размер шрифта */
+        font-weight: bold; /* жирный шрифт */
+        color: var(--color); /* белый цвет шрифта */
+    }
+
+    .container td:hover {
+        cursor: pointer;
+        background-color: var(--color-hover);
+        color: var(--button-background-hover);
+        box-shadow: 2px 0 5px dimgray;
+        text-shadow: 0 0 10px white;
+    }
+
+    .container td span.danger {
+        color: mediumvioletred;
+    }
+
+    #new-game {
+        font-size: 1.5em;
+        border-radius: var(--button-radius);
+        border: var(--button-border);
+        background-color: dimgray;
+        color: var(--color);
+        padding: 10px;
+    }
+
+    #new-game:hover {
+        cursor: pointer;
+        color: var(--button-background-hover);
+        box-shadow: 2px 0 5px dimgray;
+        text-shadow: 0 0 10px white;
+    }
+
+
+</style>
