@@ -134,5 +134,10 @@ func main() {
 	})
 
 	// infra specific
-	lo.Must0(app.Listen("0.0.0.0:8080"))
+	lo.Must0(app.ListenTLS(
+		"0.0.0.0:8080",
+		"cert/conf/live/htmx.space/fullchain.pem",
+		"cert/conf/live/htmx.space/privkey.pem",
+	))
+	// lo.Must0(app.Listen(":8080"))
 }
