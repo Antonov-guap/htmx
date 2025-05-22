@@ -8,6 +8,7 @@ import (
 )
 
 func main() {
+	// test commit
 	app := fiber.New()
 
 	app.Get("/event_stream", func(c *fiber.Ctx) error {
